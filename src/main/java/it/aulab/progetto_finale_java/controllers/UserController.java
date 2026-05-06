@@ -45,12 +45,17 @@ public class UserController{
 
     //Rotta per il salvataggio della registrazione
     @PostMapping("/register/save")
-    public String registration(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result ,Model model, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response){
+    public String registration(@Valid @ModelAttribute("user") UserDTO userDTO,
+                                BindingResult result ,
+                                Model model,
+                                RedirectAttributes redirectAttributes,
+                                 HttpServletRequest request, HttpServletResponse response){
         
         User existingUser= userService.findUserByEmail(userDTO.getEmail());
 
         if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
-           result.rejectValue("email", null, "there is alredy an account registered with the same email"); 
+           result.rejectValue("email", null,
+            "there is alredy an account registered with the same email"); 
         }
 
         if(result.hasErrors()){
@@ -61,7 +66,7 @@ public class UserController{
 
         redirectAttributes.addFlashAttribute("successMessage", "Registratione avvenuta con successo!");
 
-        return "redirect:/register?success";
+        return "redirect:/";
         
     }
     

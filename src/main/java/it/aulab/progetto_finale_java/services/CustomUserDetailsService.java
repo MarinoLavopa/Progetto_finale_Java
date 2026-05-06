@@ -33,18 +33,20 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.getEmail(),
             user.getPassword(),
             // getAuthorities()
-            mapRolesToAuthorities(user.getRoles())
+            mapRolesToAuthorities(user.getRoles()) //mappa i ruoli dell'utente
         ); 
     }
 
-    public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
-        Collection<? extends GrantedAuthority> mapRoles=null;
-        if(roles.size() !=0){
-            mapRoles= roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
+        Collection<? extends GrantedAuthority> mapRoles = null;
+        if(roles.size() != 0){
+            mapRoles= roles.stream()
+            .map(role -> new SimpleGrantedAuthority(role.getName()))
+            .collect(Collectors.toList());
         }
         else{
             mapRoles= Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
         }
-        return Arrays.asList(new SimpleGrantedAuthority("user"));
+        return mapRoles;
     }
 }
