@@ -26,6 +26,9 @@ public class CareerRequest {
     @Column
     private Boolean isChecked;
 
+    @Column
+    private Boolean isViewed= false;
+
     //relazioni con tabelle user e role
     @OneToOne
     @JoinColumn(name="user_id")

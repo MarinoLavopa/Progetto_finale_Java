@@ -11,10 +11,12 @@ import it.aulab.progetto_finale_java.models.CareerRequest;
 public interface CareerRequestRepository extends CrudRepository<CareerRequest, Long> {
 
     List<CareerRequest> findByIsCheckedFalse();
+    List<CareerRequest> findByIsCheckedFalseAndIsViewedFalse();
 
     @Query(value="SELECT user_id FROM users_roles", nativeQuery=true)
     List<Long> findAllUserIds();
 
     @Query(value="SELECT role_id FROM users_roles WHERE user_id = :id", nativeQuery=true)
     List<Long> findByUserId(@Param("id") Long id);
+
 }

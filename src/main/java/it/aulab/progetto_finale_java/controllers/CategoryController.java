@@ -6,15 +6,21 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.aulab.progetto_finale_java.dtos.ArticleDto;
 import it.aulab.progetto_finale_java.dtos.CategoryDto;
 import it.aulab.progetto_finale_java.models.Category;
 import it.aulab.progetto_finale_java.services.ArticleService;
 import it.aulab.progetto_finale_java.services.CategoryService;
+import jakarta.validation.Valid;
+
 
 @Controller
 @RequestMapping("/categories")
@@ -40,6 +46,41 @@ public class CategoryController {
         viewModel.addAttribute("articles", articles);
         
         return "article/articles";
+
+        
     }
+
+    //Rotta per la creazione di una categoria
+        @GetMapping("create")
+        public String categoryCreate(Model viewModel){
+            viewModel.addAttribute("title", "Crea una categoria");
+            viewModel.addAttribute("category", new Category());
+            return "category/create";
+        }
+
+        //Rotta per la memorizzazione di una categoria 
+        @PostMapping
+        public String categoryStore(@Valid @ModelAttribute("category") Category category,
+                                    BindingResult result,
+                                    RedirectAttributes redirectAttributes,
+                                    Model viewModel){ {
+
+            //controllo degli errori con validazioni
+            if(result.hasErrors()){
+                viewModel.addAttribute("title", "Crea una categoria");
+                viewModel.addAttribute("category", category);
+                return "category/create";
+            }
+
+            categoryService.create(category, null,null);
+            redirectAttributes.addFlashAttribute("successMessage", "Categoria aggiunta con successo");
+            
+            return "redirect:/admin/dashboard";
+            
+            
+        }
+
+    }
+        
 
 }
