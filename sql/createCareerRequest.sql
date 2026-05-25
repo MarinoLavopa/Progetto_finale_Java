@@ -5,5 +5,6 @@ CREATE TABLE career_request(
     FOREIGN KEY (user_id) REFERENCES users(id),
     role_id BIGINT,
     FOREIGN KEY (role_id) REFERENCES roles(id),
-    is_checked BOOLEAN
+    is_checked BOOLEAN,
+    is_viewed BOOLEAN DEFAULT FALSE
 );
