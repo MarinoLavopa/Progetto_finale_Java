@@ -49,6 +49,7 @@ public class CategoryService implements CrudService<CategoryDto, Category, Long>
     @Override
     public CategoryDto update(Long key, Category model, MultipartFile file) {
         if(categoryRepository.existsById(key)){
+            model.setId(key);
             return modelMapper.map(categoryRepository.save(model), CategoryDto.class);
         }else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
